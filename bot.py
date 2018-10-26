@@ -94,9 +94,9 @@ def showchannels(user, y):
         text+='Условия: '+ch['conditions']+'\n'
         text+='Для заказа рекламы тебе стоит написать администратору канала.\n'
         text+='\n'
-        channel+=1
       except:
             pass
+      channel+=1
     return text
     
    
