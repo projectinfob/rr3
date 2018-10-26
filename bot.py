@@ -35,11 +35,10 @@ def start(m):
 def addchannel(m):
     x=users.find_one({'id':m.from_user.id})
     if x['isadmin']==1:
-        if m.from_user.id==682723695 and m.from_user.id==m.chat.id:
-            users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':1}})
-            kb=types.ReplyKeyboardMarkup()
-            kb.add(types.KeyboardButton('❌Отмена'))
-            bot.send_message(m.chat.id, '''Напишите следующие данные о канале в таком формате (одним сообщением):\n\n
+        users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':1}})
+        kb=types.ReplyKeyboardMarkup()
+        kb.add(types.KeyboardButton('❌Отмена'))
+        bot.send_message(m.chat.id, '''Напишите следующие данные о канале в таком формате (одним сообщением):\n\n
 👤Рекламодатель;
 📺Канал;
 📊Подписчиков;
