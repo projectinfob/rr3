@@ -77,6 +77,7 @@ def channelselect(m):
         text=showchannels(user,y)
         kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
+        kb.add(types.KeyboardButton('🏡Главное меню'))
         if text!='':
             bot.send_message(m.chat.id, text, reply_markup=kb)
         else:
@@ -86,6 +87,7 @@ def channelselect(m):
             text=showchannels(user,y)
             kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
             kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
+            kb.add(types.KeyboardButton('🏡Главное меню'))
             bot.send_message(m.chat.id, text, reply_markup=kb)
             
     if m.text=='◀':
@@ -98,6 +100,7 @@ def channelselect(m):
         text=showchannels(user,y)
         kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
+        kb.add(types.KeyboardButton('🏡Главное меню'))
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
         
