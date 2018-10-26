@@ -24,6 +24,15 @@ def start(m):
     if m.from_user.id==m.chat.id:
         sendmenu(m.chat.id, m.from_user.id)
         
+@bot.message_handler(commands=['addadmin'])
+def addadmin(m):
+   x=users.find_one({'id':m.from_user.id})
+   if x['id']==682723695:
+        users.update_one({'id':m.from_user.id},{'$set':{'addingadmin':1}})
+        kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
+        kb.add(types.KeyboardButton('❌Отмена'))
+        bot.send_message(m.chat.id, 'Отправьте id юзера, которого хотите добавить в администраторы бота (id юзера можно '+
+                         'получить, переслав его сообщение боту @ForwardInfoBot).')
    
 @bot.message_handler(commands=['addchannel'])
 def addchannel(m):
@@ -68,6 +77,7 @@ def sendmenu(chatid,userid):
 @bot.message_handler()
 def channelselect(m):
   if users.find_one({'id':m.from_user.id}) is not None:
+    users.update_one({'id':m.from_user.id},{'$set':{'name':m.from_user.first_name}})
     x=channels.find_one({})
     user=users.find_one({'id':m.from_user.id})
     if m.text=='▶':
@@ -145,6 +155,14 @@ def channelselect(m):
             users.update_one({'id':m.from_user.id},{'$set':{'removingchannel':0}})
             bot.send_message(m.chat.id, 'Удаление канала отменено.')
             sendmenu(m.chat.id, m.from_user.id)
+        if user['addingadmin']==1:
+            users.update_one({'id':m.from_user.id},{'$set':{'addingadmin':0}})
+            bot.send_message(m.chat.id, 'Добавление администратора отменено.')
+            sendmenu(m.chat.id, m.from_user.id)
+        if user['removingadmin']==1:
+            users.update_one({'id':m.from_user.id},{'$set':{'removingadmin':0}})
+            bot.send_message(m.chat.id, 'Удаление администратора отменено.')
+            sendmenu(m.chat.id, m.from_user.id)
                
     if m.text=='🏡Главное меню':
         sendmenu(m.chat.id, m.from_user.id)
@@ -162,7 +180,6 @@ def channelselect(m):
         theme=nametotheme(y[5].lower())
         piar=y[6]
         conditions=y[7]
-        #try:
         reklamodatel+=''
         channel+=''
         subs+=0
@@ -198,8 +215,27 @@ def channelselect(m):
             sendmenu(m.chat.id, m.from_user.id)
         else:
             bot.send_message(m.chat.id, 'Такого канала не существует!')
+            
+    if user['addingadmin']==1:
+        adm=users.find_one({'id':int(m.text)})
+        if adm!=None:
+            users.update_one({'id':adm['id']},{'$set':{'isadmin':1}})
+            bot.send_message(m.chat.id, 'Новый администратор ('+adm['name']+') успешно добавлен!')
+            users.update_one({'id':m.from_user.id},{'$set':{'addingadmin':0}})
+        else:
+            bot.send_message(m.chat.id, 'Юзер с таким id не регистрировался в боте!')
+            
+    if user['removingadmin']==1:
+        adm=users.find_one({'id':int(m.text)})
+        if adm!=None:
+            users.update_one({'id':adm['id']},{'$set':{'isadmin':0}})
+            bot.send_message(m.chat.id, 'Юзер '+adm['name']+' больше не администратор!')
+            users.update_one({'id':m.from_user.id},{'$set':{'removingadmin':0}})
+        else:
+            bot.send_message(m.chat.id, 'Юзер с таким id не регистрировался в боте!')
         
-    
+  else:
+      bot.send_message(m.chat.id, 'Сначала напишите боту /start!')
         
            
                 
@@ -270,7 +306,9 @@ def createuser(id,name,username):
           'currentindex':0,
           'addingchannel':0,
           'isadmin':adm,
-          'removingchannel':0
+          'removingchannel':0,
+          'addingadmin':0,
+          'removingadmin':0
          }
       
       
