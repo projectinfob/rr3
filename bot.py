@@ -52,7 +52,7 @@ def channelselect(m):
             y=x[user['currenttheme']]
             text=showchannels(user,y)
             kb=types.ReplyKeyboardMarkup()
-            kb.add(types.KeyboardButton('Назад'),types.ReplyKeyboardButton('Далее'))
+            kb.add(types.KeyboardButton('Назад'),types.KeyboardButton('Далее'))
             bot.send_message(m.chat.id, text, reply_markup=kb)
             
     if m.text=='Назад':
