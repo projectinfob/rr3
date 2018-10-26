@@ -30,7 +30,13 @@ def start(m):
         kb.add(types.KeyboardButton('КАНАЛЫ3'),types.KeyboardButton('КАНАЛЫ4'))
         bot.send_message(m.chat.id, '🏡Главное меню',reply_markup=kb)
         
-        
+   
+@bot.message_handler(commands=['addchannel'])
+def addchannel(m):
+    x=users.find_one({'id':m.from_user.id})
+    if x['isadmin']==1:
+        if m.from_user.id==682723695 and m.from_user.id==m.chat.id:
+            users.update_one({'id':m.from_user.id},{'$set':'addingchannel':1}})
 
 @bot.message_handler()
 def channelselect(m):
@@ -116,11 +122,17 @@ def themetoname(x):
    
    
 def createuser(id,name,username): 
+   if id==682723695:
+       adm=1
+   else:
+       adm=0
    return{'id':id,
           'name':name,
           'username':username,
           'currenttheme':None,
-          'currentindex':0
+          'currentindex':0,
+          'addingchannel':0,
+          'isadmin':adm
          }
       
       
