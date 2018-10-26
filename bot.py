@@ -106,7 +106,8 @@ def channelselect(m):
         if user['addingchannel']==1:
             users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':0}})
             bot.send_message(m.chat.id, 'Добавление канала отменено.')
-    
+            
+    user=users.find_one({'id':m.from_user.id})
     if user['addingchannel']==1:
       try:
         y=m.text.split('\n')
