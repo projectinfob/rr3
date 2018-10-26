@@ -131,6 +131,13 @@ def channelselect(m):
         conditions+=''
         channels.update_one({},{'$push':{theme:createchannel(reklamodatel,channel,subs,cost,discount,theme,piar,conditions)}})
         bot.send_message(m.chat.id, 'Канал успешно добавлен!')
+        users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
+        kb=types.ReplyKeyboardMarkup()
+        kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
+        kb.add(types.KeyboardButton('МУЗЫКА'),types.KeyboardButton('БЛОГИ'))
+        kb.add(types.KeyboardButton('КАНАЛЫ1'),types.KeyboardButton('КАНАЛЫ2'))
+        kb.add(types.KeyboardButton('КАНАЛЫ3'),types.KeyboardButton('КАНАЛЫ4'))
+        bot.send_message(m.chat.id, '🏡Главное меню',reply_markup=kb)
       except:
            bot.send_message(m.chat.id, 'Неправильно введены аргументы для добавления канала!')
            
