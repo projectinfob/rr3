@@ -122,7 +122,7 @@ def channelselect(m):
         theme+=''
         piar+=''
         conditions+=''
-        channels.update_one({},{'push':{theme:createchannel(reklamodatel,channel,subs,cost,discount,theme,piar,conditions))
+        channels.update_one({},{'push':{theme:createchannel(reklamodatel,channel,subs,cost,discount,theme,piar,conditions)}})
         bot.send_message(m.chat.id, 'Канал успешно добавлен!')
         #except:
             #text='Неправильно введены аргументы!'
