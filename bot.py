@@ -172,15 +172,19 @@ def channelselect(m):
             
     if user['removingchannel']==1: 
         chn=None
+        ii=None
         for ids in x:
           if ids!='_id':
+            i=0
             for idss in x[ids]:
                 print(ids)
                 print(idss)
                 if idss['channel']==m.text:
                     chn=idss
+                    ii=i
+                i+=1
         if chn!=None:
-            channels.remove({chn['theme']+'.channel':chn['channel']})
+            channels.update_one({chn['theme']+'.channel':chn['channel']},{'$pull':{chn['theme'][ii]}})
             bot.send_message(m.chat.id, 'Канал успешно удалён!')
             sendmenu(m.chat.id, m.from_user.id)
         else:
