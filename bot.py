@@ -43,8 +43,18 @@ def channelselect(m):
         y=x[user['currenttheme']]
         text=showchannels(user,y)
         kb=types.ReplyKeyboardMarkup()
-        kb.add(types.ReplyKeyboardButton('Назад'),types.ReplyKeyboardButton('Далее'))
-        bot.send_message(m.chat.id, text, reply_markup=kb)
+        kb.add(types.KeyboardButton('Назад'),types.ReplyKeyboardButton('Далее'))
+        if text!='':
+            bot.send_message(m.chat.id, text, reply_markup=kb)
+        else:
+            users.update_one({'id':user['id']},{'$set':{'currentindex':0}})
+            user=users.find_one({'id':m.from_user.id})
+            y=x[user['currenttheme']]
+            text=showchannels(user,y)
+            kb=types.ReplyKeyboardMarkup()
+            kb.add(types.KeyboardButton('Назад'),types.ReplyKeyboardButton('Далее'))
+            bot.send_message(m.chat.id, text, reply_markup=kb)
+            
     if m.text=='Назад':
         users.update_one({'id':user['id']},{'$inc':{'currentindex':-3}})
         user=users.find_one({'id':m.from_user.id})
