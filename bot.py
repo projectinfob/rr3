@@ -37,6 +37,20 @@ def addchannel(m):
     if x['isadmin']==1:
         if m.from_user.id==682723695 and m.from_user.id==m.chat.id:
             users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':1}})
+            kb=types.ReplyKeyboardMarkup()
+            kb.add(types.KeyboardButton('❌Отмена'))
+            bot.send_message(m.chat.id, '''Напишите следующие данные о канале в таком формате (одним сообщением):\n\n
+👤Рекламодатель;
+📺Канал;
+📊Подписчиков;
+💶Цена;
+💳Скидка (в процентах);
+📗Тематика (Музыка/Блоги);
+🔁Взаимный пиар;
+📋Условия.
+
+''',reply_markup=kb)
+
 
 @bot.message_handler()
 def channelselect(m):
@@ -88,6 +102,11 @@ def channelselect(m):
         kb=types.ReplyKeyboardMarkup()
         kb.add(types.KeyboardButton('Назад'),types.KeyboardButton('Далее'))
         bot.send_message(m.chat.id, text, reply_markup=kb)
+    
+    if user['addingchannel']==1:
+        x=m.text.split('\n')
+        print(x)
+        
             
     
 def showchannels(user, y):
