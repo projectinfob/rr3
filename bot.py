@@ -33,7 +33,7 @@ def start(m):
 
 @bot.message_handler()
 def channelselect(m):
-   print('1')
+    print('1')
     x=channels.find_one({})
     user=users.find_one({'id':m.from_user.id})
     if m.text=='Далее':
