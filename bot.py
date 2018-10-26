@@ -29,7 +29,7 @@ def setbutton(m):
          while ind<len(x):
             text+=x[ind]+' '
             ind+=1
-            c+=1
+         c=len(text)
          text=text[:c-1]
          print(text)
          i=int(x[1])-1
