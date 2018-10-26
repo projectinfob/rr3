@@ -103,10 +103,43 @@ def channelselect(m):
         bot.send_message(m.chat.id, text, reply_markup=kb)
     
     if user['addingchannel']==1:
-        x=m.text.split('\n')
-        print(x)
+        y=m.text.split('\n')
+        print(y)
+        reklamodatel=y[0]
+        channel=y[1]
+        subs=y[2]
+        cost=y[3]
+        discount=y[4]
+        theme=nametotheme(y[5].lower())
+        piar=y[6]
+        conditions=y[7]
+        #try:
+        reklamodatel+=''
+        channel+=''
+        subs+=0
+        cost+=0
+        discount+=0
+        theme+=''
+        piar+=''
+        conditions+=''
+        channels.update_one({},{'push':{theme:createchannel(reklamodatel,channel,subs,cost,discount,theme,piar,conditions))
+        bot.send_message(m.chat.id, 'Канал успешно добавлен!')
+        #except:
+            #text='Неправильно введены аргументы!'
         
-            
+           
+                
+def createchannel(reklamodatel,channel,subs,cost,discount,theme,piar,conditions):
+    return{'reklamodatel':reklamodatel,
+           'channel':channel,
+           'subs':subs,
+           'cost':cost,
+           'discount':discount,
+           'theme':theme,
+           'piar':piar,
+           'conditions':conditions
+          }
+                
     
 def showchannels(user, y):
     channel=user['currentindex']
@@ -134,6 +167,13 @@ def showchannels(user, y):
     return text
     
    
+def nametotheme(x):
+    if x=='музыка':
+        return 'music'
+    elif x=='блоги':
+        return 'blogs'
+
+
 def themetoname(x):
    if x=='music':
       return 'Музыка'
