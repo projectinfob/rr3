@@ -23,10 +23,10 @@ def start(m):
          users.insert_one(createuser(m.from_user.id,m.from_user.first_name,m.from_user.username))
     if m.from_user.id==m.chat.id:
         kb=types.ReplyKeyboardMarkup()
-        kb.add(types.ReplyKeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
-        kb.add(types.ReplyKeyboardButton('МУЗЫКА'),types.ReplyKeyboardButton('БЛОГИ'))
-        kb.add(types.ReplyKeyboardButton('КАНАЛЫ1'),types.ReplyKeyboardButton('КАНАЛЫ2'))
-        kb.add(types.ReplyKeyboardButton('КАНАЛЫ3'),types.ReplyKeyboardButton('КАНАЛЫ4'))
+        kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
+        kb.add(types.KeyboardButton('МУЗЫКА'),types.KeyboardButton('БЛОГИ'))
+        kb.add(types.KeyboardButton('КАНАЛЫ1'),types.KeyboardButton('КАНАЛЫ2'))
+        kb.add(types.KeyboardButton('КАНАЛЫ3'),types.KeyboardButton('КАНАЛЫ4'))
         bot.send_message(m.chat.id, '🏡Главное меню',reply_markup=kb)
         
         
@@ -52,7 +52,7 @@ def channelselect(m):
         y=x[user['currenttheme']]
         text=showchannels(user,y)
         kb=types.ReplyKeyboardMarkup()
-        kb.add(types.ReplyKeyboardButton('Назад'),types.ReplyKeyboardButton('Далее'))
+        kb.add(types.KeyboardButton('Назад'),types.KeyboardButton('Далее'))
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
         
@@ -67,7 +67,7 @@ def channelselect(m):
         text+=showchannels(user,y)
         
         kb=types.ReplyKeyboardMarkup()
-        kb.add(types.ReplyKeyboardButton('Назад'),types.ReplyKeyboardButton('Далее'))
+        kb.add(types.KeyboardButton('Назад'),types.KeyboardButton('Далее'))
         bot.send_message(m.chat.id, text, reply_markup=kb)
             
     
