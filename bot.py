@@ -106,6 +106,13 @@ def channelselect(m):
         if user['addingchannel']==1:
             users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':0}})
             bot.send_message(m.chat.id, 'Добавление канала отменено.')
+            users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
+            kb=types.ReplyKeyboardMarkup()
+            kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
+            kb.add(types.KeyboardButton('МУЗЫКА'),types.KeyboardButton('БЛОГИ'))
+            kb.add(types.KeyboardButton('КАНАЛЫ1'),types.KeyboardButton('КАНАЛЫ2'))
+            kb.add(types.KeyboardButton('КАНАЛЫ3'),types.KeyboardButton('КАНАЛЫ4'))
+            bot.send_message(m.chat.id, '🏡Главное меню',reply_markup=kb)
             
     user=users.find_one({'id':m.from_user.id})
     if user['addingchannel']==1:
