@@ -75,18 +75,18 @@ def channelselect(m):
         user=users.find_one({'id':m.from_user.id})
         y=x[user['currenttheme']]
         text=showchannels(user,y)
-        kb=types.ReplyKeyboardMarkup()
+        kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
         if text!='':
-            bot.send_message(m.chat.id, text, reply_markup=kb, resize_keyboard=True)
+            bot.send_message(m.chat.id, text, reply_markup=kb)
         else:
             users.update_one({'id':user['id']},{'$set':{'currentindex':0}})
             user=users.find_one({'id':m.from_user.id})
             y=x[user['currenttheme']]
             text=showchannels(user,y)
-            kb=types.ReplyKeyboardMarkup()
+            kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
             kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
-            bot.send_message(m.chat.id, text, reply_markup=kb,resize_keyboard=True)
+            bot.send_message(m.chat.id, text, reply_markup=kb)
             
     if m.text=='◀':
         users.update_one({'id':user['id']},{'$inc':{'currentindex':-3}})
@@ -96,9 +96,9 @@ def channelselect(m):
         user=users.find_one({'id':m.from_user.id})
         y=x[user['currenttheme']]
         text=showchannels(user,y)
-        kb=types.ReplyKeyboardMarkup()
+        kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
-        bot.send_message(m.chat.id, text, reply_markup=kb,resize_keyboard=True)
+        bot.send_message(m.chat.id, text, reply_markup=kb)
         
         
     if m.text=='МУЗЫКА':
