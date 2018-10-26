@@ -59,7 +59,7 @@ def sendmenu(chatid,userid):
     users.update_one({'id':userid},{'$set':{'currentindex':0}})
     kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
-    kb.add(types.KeyboardButton('МУЗЫКА'),types.KeyboardButton('БЛОГИ'))
+    kb.add(types.KeyboardButton('Музыка'),types.KeyboardButton('Блоги'))
     kb.add(types.KeyboardButton('КАНАЛЫ1'),types.KeyboardButton('КАНАЛЫ2'))
     kb.add(types.KeyboardButton('КАНАЛЫ3'),types.KeyboardButton('КАНАЛЫ4'))
     bot.send_message(chatid, '🏡Главное меню',reply_markup=kb)
@@ -101,7 +101,7 @@ def channelselect(m):
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
         
-    if m.text=='МУЗЫКА':
+    if m.text=='Музыка':
         print('2')
         y=x['music']
         channel=0
@@ -130,6 +130,7 @@ def channelselect(m):
         
         kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
+        kb.add(types.KeyboardButton('🏡Главное меню'))
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
     if m.text=='❌Отмена':
