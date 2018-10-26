@@ -88,9 +88,9 @@ def sendmenu(chatid,userid):
     users.update_one({'id':userid},{'$set':{'currentindex':0}})
     kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
-    kb.add(types.KeyboardButton(b['buttons'][0]),types.KeyboardButton(b['buttons'][1]))
-    kb.add(types.KeyboardButton(b['buttons'][2]),types.KeyboardButton(b['buttons'][3]))
-    kb.add(types.KeyboardButton(b['buttons'][4]),types.KeyboardButton(b['buttons'][5]))
+    kb.add(types.KeyboardButton(b['buttons']['0']),types.KeyboardButton(b['buttons']['1']))
+    kb.add(types.KeyboardButton(b['buttons']['2']),types.KeyboardButton(b['buttons']['3']))
+    kb.add(types.KeyboardButton(b['buttons']['4']),types.KeyboardButton(b['buttons']['5']))
     bot.send_message(chatid, '🏡Главное меню',reply_markup=kb)
         
         
