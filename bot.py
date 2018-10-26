@@ -36,7 +36,7 @@ def addchannel(m):
     x=users.find_one({'id':m.from_user.id})
     if x['isadmin']==1:
         if m.from_user.id==682723695 and m.from_user.id==m.chat.id:
-            users.update_one({'id':m.from_user.id},{'$set':'addingchannel':1}})
+            users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':1}})
 
 @bot.message_handler()
 def channelselect(m):
