@@ -174,6 +174,8 @@ def channelselect(m):
         chn=None
         for ids in x:
             for idss in ids:
+                print(ids)
+                print(idss)
                 if ids[idss]['channel']==m.text:
                     chn=ids[idss]
         if chn!=None:
