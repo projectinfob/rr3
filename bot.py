@@ -30,7 +30,7 @@ def setbutton(m):
             ind+=1
          i=int(x[1])-1
          buttons.update_one({},{'$set':{'buttons.'+str(i):text}})
-         bot.send_message(m.chat.id, 'Вы успешно обновили кнопку ('+str(i)+')!')
+         bot.send_message(m.chat.id, 'Вы успешно обновили кнопку ('+str(i+1)+')!')
       #except:
       #   bot.send_message(m.chat.id, 'Неверный формат. Вот пример введения этой команды:\n'+
       #                    '`/setbutton 1 Музыка`',parse_mode='markdown')
