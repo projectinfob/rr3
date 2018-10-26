@@ -33,6 +33,7 @@ def start(m):
 
 @bot.message_handler()
 def channelselect(m):
+   print('1')
     x=channels.find_one({})
     user=users.find_one({'id':m.from_user.id})
     if m.text=='Далее':
@@ -57,6 +58,7 @@ def channelselect(m):
         
         
     if m.text=='МУЗЫКА':
+        print('2')
         y=x['music']
         channel=0
         text=''
