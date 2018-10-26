@@ -165,10 +165,24 @@ def channelselect(m):
         conditions+=''
         channels.update_one({},{'$push':{theme:createchannel(reklamodatel,channel,subs,cost,discount,theme,piar,conditions)}})
         bot.send_message(m.chat.id, 'Канал успешно добавлен!')
+        users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':0}})
         sendmenu(m.chat.id, m.from_user.id)
       except:
            bot.send_message(m.chat.id, 'Неправильно введены аргументы для добавления канала!')
-           
+            
+    if user['removingchannel']==1: 
+        chn=None
+        for ids in x:
+            for idss in ids:
+                if ids[idss]['channel']==m.text:
+                    chn=ids[idss]
+        if chn!=None:
+            channels.remove({chn['theme']+'.channel':chn['channel']})
+            bot.send_message(m.chat.id, 'Канал успешно удалён!')
+        else:
+            bot.send_message(m.chat.id, 'Такого канала не существует!')
+        
+    
         
            
                 
@@ -223,6 +237,8 @@ def nametotheme(x):
 def themetoname(x):
    if x=='music':
       return 'Музыка'
+   if x=='blogs':
+      return 'Блоги'
    
    
 def createuser(id,name,username): 
