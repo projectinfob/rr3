@@ -186,6 +186,7 @@ def channelselect(m):
         if chn!=None:
             channels.update_one({},{'$pull':{chn['theme']:m.text}})
             bot.send_message(m.chat.id, 'Канал успешно удалён!')
+            users.update_one({'id':m.from_user.id},{'$set':{'removingchannel':0}})
             sendmenu(m.chat.id, m.from_user.id)
         else:
             bot.send_message(m.chat.id, 'Такого канала не существует!')
