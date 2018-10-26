@@ -177,8 +177,8 @@ def channelselect(m):
             for idss in x[ids]:
                 print(ids)
                 print(idss)
-                if ids[idss]['channel']==m.text:
-                    chn=ids[idss]
+                if idss['channel']==m.text:
+                    chn=idss
         if chn!=None:
             channels.remove({chn['theme']+'.channel':chn['channel']})
             bot.send_message(m.chat.id, 'Канал успешно удалён!')
