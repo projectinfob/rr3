@@ -22,13 +22,7 @@ def start(m):
     if users.find_one({'id':m.from_user.id}) is None:
          users.insert_one(createuser(m.from_user.id,m.from_user.first_name,m.from_user.username))
     if m.from_user.id==m.chat.id:
-        users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
-        kb=types.ReplyKeyboardMarkup()
-        kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
-        kb.add(types.KeyboardButton('МУЗЫКА'),types.KeyboardButton('БЛОГИ'))
-        kb.add(types.KeyboardButton('КАНАЛЫ1'),types.KeyboardButton('КАНАЛЫ2'))
-        kb.add(types.KeyboardButton('КАНАЛЫ3'),types.KeyboardButton('КАНАЛЫ4'))
-        bot.send_message(m.chat.id, '🏡Главное меню',reply_markup=kb)
+        sendmenu(m.chat.id, m.from_user.id)
         
    
 @bot.message_handler(commands=['addchannel'])
@@ -48,12 +42,32 @@ def addchannel(m):
 🔁Взаимный пиар;
 📋Условия.
 
-''',reply_markup=kb)
+''',reply_markup=kb,resize_keyboard=True)
+        
+        
+@bot.message_handler(commands=['delchannel'])
+def addchannel(m):
+    x=users.find_one({'id':m.from_user.id})
+    if x['isadmin']==1:
+        users.update_one({'id':m.from_user.id},{'$set':{'removingchannel':1}})
+        kb=types.ReplyKeyboardMarkup()
+        kb.add(types.KeyboardButton('❌Отмена'))
+        bot.send_message(m.chat.id, 'Чтобы удалить канал, напишите его юзернейм (@канал).',reply_markup=kb,resize_keyboard=True)
 
 
+def sendmenu(chatd,userid):     
+    users.update_one({'id':userid},{'$set':{'currentindex':0}})
+    kb=types.ReplyKeyboardMarkup()
+    kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
+    kb.add(types.KeyboardButton('МУЗЫКА'),types.KeyboardButton('БЛОГИ'))
+    kb.add(types.KeyboardButton('КАНАЛЫ1'),types.KeyboardButton('КАНАЛЫ2'))
+    kb.add(types.KeyboardButton('КАНАЛЫ3'),types.KeyboardButton('КАНАЛЫ4'))
+    bot.send_message(chatid, '🏡Главное меню',reply_markup=kb,resize_keyboard=True)
+        
+        
 @bot.message_handler()
 def channelselect(m):
-    print('1')
+  if users.find_one({'id':m.from_user.id}) is not None:
     x=channels.find_one({})
     user=users.find_one({'id':m.from_user.id})
     if m.text=='▶':
@@ -64,7 +78,7 @@ def channelselect(m):
         kb=types.ReplyKeyboardMarkup()
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
         if text!='':
-            bot.send_message(m.chat.id, text, reply_markup=kb)
+            bot.send_message(m.chat.id, text, reply_markup=kb, resize_keyboard=True)
         else:
             users.update_one({'id':user['id']},{'$set':{'currentindex':0}})
             user=users.find_one({'id':m.from_user.id})
@@ -72,7 +86,7 @@ def channelselect(m):
             text=showchannels(user,y)
             kb=types.ReplyKeyboardMarkup()
             kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
-            bot.send_message(m.chat.id, text, reply_markup=kb)
+            bot.send_message(m.chat.id, text, reply_markup=kb,resize_keyboard=True)
             
     if m.text=='◀':
         users.update_one({'id':user['id']},{'$inc':{'currentindex':-3}})
@@ -84,7 +98,7 @@ def channelselect(m):
         text=showchannels(user,y)
         kb=types.ReplyKeyboardMarkup()
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
-        bot.send_message(m.chat.id, text, reply_markup=kb)
+        bot.send_message(m.chat.id, text, reply_markup=kb,resize_keyboard=True)
         
         
     if m.text=='МУЗЫКА':
@@ -100,19 +114,32 @@ def channelselect(m):
         
         kb=types.ReplyKeyboardMarkup()
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
-        bot.send_message(m.chat.id, text, reply_markup=kb)
+        bot.send_message(m.chat.id, text, reply_markup=kb,resize_keyboard=True)
+        
+    if m.text=='Блоги':
+        print('2')
+        y=x['blogs']
+        channel=0
+        text=''
+        users.update_one({'id':m.from_user.id},{'$set':{'currenttheme':'blogs'}})
+        users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
+        user=users.find_one({'id':m.from_user.id})
+        
+        text+=showchannels(user,y)
+        
+        kb=types.ReplyKeyboardMarkup()
+        kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
+        bot.send_message(m.chat.id, text, reply_markup=kb,resize_keyboard=True)
         
     if m.text=='❌Отмена':
         if user['addingchannel']==1:
             users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':0}})
             bot.send_message(m.chat.id, 'Добавление канала отменено.')
-            users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
-            kb=types.ReplyKeyboardMarkup()
-            kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
-            kb.add(types.KeyboardButton('МУЗЫКА'),types.KeyboardButton('БЛОГИ'))
-            kb.add(types.KeyboardButton('КАНАЛЫ1'),types.KeyboardButton('КАНАЛЫ2'))
-            kb.add(types.KeyboardButton('КАНАЛЫ3'),types.KeyboardButton('КАНАЛЫ4'))
-            bot.send_message(m.chat.id, '🏡Главное меню',reply_markup=kb)
+            sendmenu(m.chat.id, m.from_user.id)
+        if user['removingchannel']==1:
+            users.update_one({'id':m.from_user.id},{'$set':{'removingchannel':0}})
+            bot.send_message(m.chat.id, 'Удаление канала отменено.')
+            sendmenu(id)
             
     user=users.find_one({'id':m.from_user.id})
     if user['addingchannel']==1:
@@ -138,13 +165,7 @@ def channelselect(m):
         conditions+=''
         channels.update_one({},{'$push':{theme:createchannel(reklamodatel,channel,subs,cost,discount,theme,piar,conditions)}})
         bot.send_message(m.chat.id, 'Канал успешно добавлен!')
-        users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
-        kb=types.ReplyKeyboardMarkup()
-        kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
-        kb.add(types.KeyboardButton('МУЗЫКА'),types.KeyboardButton('БЛОГИ'))
-        kb.add(types.KeyboardButton('КАНАЛЫ1'),types.KeyboardButton('КАНАЛЫ2'))
-        kb.add(types.KeyboardButton('КАНАЛЫ3'),types.KeyboardButton('КАНАЛЫ4'))
-        bot.send_message(m.chat.id, '🏡Главное меню',reply_markup=kb)
+        sendmenu(m.chat.id, m.from_user.id)
       except:
            bot.send_message(m.chat.id, 'Неправильно введены аргументы для добавления канала!')
            
@@ -215,7 +236,8 @@ def createuser(id,name,username):
           'currenttheme':None,
           'currentindex':0,
           'addingchannel':0,
-          'isadmin':adm
+          'isadmin':adm,
+          'removingchannel':0
          }
       
       
