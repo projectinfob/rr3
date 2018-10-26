@@ -87,7 +87,7 @@ def showchannels(user, y):
         text+='Скидка: '+str(ch['discount'])+'\n'
         text+='Итоговая цена: '+str(ch['finalcost'])+'\n'
         text+='Тематика: '+themetoname(ch['theme'])+'\n'
-        text+='Взаимный пиар: '+yesno(ch['piar'])+'\n'
+        text+='Взаимный пиар: '+ch['piar']+'\n'
         text+='Условия: '+ch['conditions']+'\n'
         text+='Для заказа рекламы тебе стоит написать администратору канала.\n'
         text+='\n'
