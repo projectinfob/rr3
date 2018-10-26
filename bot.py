@@ -23,6 +23,7 @@ def setbutton(m):
    if m.from_user.id==682723695 or m.from_user.id==441399484:
          x=m.text.split(' ')
       #try:
+         text=''
          ind=2
          while ind<len(x):
             text+=x[ind]
