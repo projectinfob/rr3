@@ -55,7 +55,7 @@ def addchannel(m):
         bot.send_message(m.chat.id, 'Чтобы удалить канал, напишите его юзернейм (@канал).',reply_markup=kb,resize_keyboard=True)
 
 
-def sendmenu(chatd,userid):     
+def sendmenu(chatid,userid):     
     users.update_one({'id':userid},{'$set':{'currentindex':0}})
     kb=types.ReplyKeyboardMarkup()
     kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
