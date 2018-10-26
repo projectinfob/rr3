@@ -139,7 +139,7 @@ def channelselect(m):
         if user['removingchannel']==1:
             users.update_one({'id':m.from_user.id},{'$set':{'removingchannel':0}})
             bot.send_message(m.chat.id, 'Удаление канала отменено.')
-            sendmenu(id)
+            sendmenu(m.chat.id, m.from_user.id)
             
     user=users.find_one({'id':m.from_user.id})
     if user['addingchannel']==1:
@@ -182,6 +182,7 @@ def channelselect(m):
         if chn!=None:
             channels.remove({chn['theme']+'.channel':chn['channel']})
             bot.send_message(m.chat.id, 'Канал успешно удалён!')
+            sendmenu(m.chat.id, m.from_user.id)
         else:
             bot.send_message(m.chat.id, 'Такого канала не существует!')
         
