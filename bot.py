@@ -15,7 +15,7 @@ users=db.users
 channels=db.channels
 
    
-bot=telebot.TeleBot(os.environ['token'])   
+bot=telebot.TeleBot(os.environ['TELEGRAM_TOKEN'])   
     
 @bot.message_handler(commands=['start'])
 def start(m):
