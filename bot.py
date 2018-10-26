@@ -130,15 +130,18 @@ def channelselect(m):
            
                 
 def createchannel(reklamodatel,channel,subs,cost,discount,theme,piar,conditions):
+    fcost=cost-(cost/(discount*0,01))
     return{'reklamodatel':reklamodatel,
            'channel':channel,
            'subs':subs,
            'cost':cost,
            'discount':discount,
+           'finalcost':fcost,
            'theme':theme,
            'piar':piar,
            'conditions':conditions
           }
+    print(fcost)
                 
     
 def showchannels(user, y):
