@@ -114,6 +114,7 @@ def channelselect(m):
         
         kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
+        kb.add(types.KeyboardButton('🏡Главное меню')
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
     if m.text=='Блоги':
@@ -140,6 +141,9 @@ def channelselect(m):
             users.update_one({'id':m.from_user.id},{'$set':{'removingchannel':0}})
             bot.send_message(m.chat.id, 'Удаление канала отменено.')
             sendmenu(m.chat.id, m.from_user.id)
+               
+    if m.text=='🏡Главное меню':
+        sendmenu(m.chat.id, m.from_user.id)
             
     user=users.find_one({'id':m.from_user.id})
     if user['addingchannel']==1:
