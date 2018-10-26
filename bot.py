@@ -101,8 +101,14 @@ def channelselect(m):
         kb=types.ReplyKeyboardMarkup()
         kb.add(types.KeyboardButton('Назад'),types.KeyboardButton('Далее'))
         bot.send_message(m.chat.id, text, reply_markup=kb)
+        
+    if m.text=='❌Отмена':
+        if user['addingchannel']==1:
+            users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':0}})
+            bot.send_message(m.chat.id, 'Добавление канала отменено.')
     
     if user['addingchannel']==1:
+      try:
         y=m.text.split('\n')
         print(y)
         reklamodatel=y[0]
@@ -124,8 +130,9 @@ def channelselect(m):
         conditions+=''
         channels.update_one({},{'$push':{theme:createchannel(reklamodatel,channel,subs,cost,discount,theme,piar,conditions)}})
         bot.send_message(m.chat.id, 'Канал успешно добавлен!')
-        #except:
-            #text='Неправильно введены аргументы!'
+      except:
+           bot.send_message(m.chat.id, 'Неправильно введены аргументы для добавления канала!')
+           
         
            
                 
