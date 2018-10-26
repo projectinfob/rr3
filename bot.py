@@ -28,7 +28,7 @@ def setbutton(m):
          while ind<len(x):
             text+=x[ind]+' '
             ind+=1
-         text=text[:1]
+         text=text[1:]
          print(text)
          i=int(x[1])-1
          buttons.update_one({},{'$set':{'buttons.'+str(i):text}})
