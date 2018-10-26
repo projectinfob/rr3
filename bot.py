@@ -22,6 +22,7 @@ def start(m):
     if users.find_one({'id':m.from_user.id}) is None:
          users.insert_one(createuser(m.from_user.id,m.from_user.first_name,m.from_user.username))
     if m.from_user.id==m.chat.id:
+        users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
         kb=types.ReplyKeyboardMarkup()
         kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
         kb.add(types.KeyboardButton('МУЗЫКА'),types.KeyboardButton('БЛОГИ'))
