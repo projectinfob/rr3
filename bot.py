@@ -135,7 +135,7 @@ def channelselect(m):
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
         
-    if m.text==b['buttons'][0]:
+    if m.text==b['buttons']['0']:
         print('2')
         y=x['music']
         channel=0
@@ -151,7 +151,7 @@ def channelselect(m):
         kb.add(types.KeyboardButton('🏡Главное меню'))
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
-    if m.text==b['buttons'][1]:
+    if m.text==b['buttons']['1']:
         print('2')
         y=x['blogs']
         channel=0
