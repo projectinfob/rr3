@@ -56,7 +56,7 @@ def channelselect(m):
     print('1')
     x=channels.find_one({})
     user=users.find_one({'id':m.from_user.id})
-    if m.text=='Далее':
+    if m.text=='▶':
         users.update_one({'id':user['id']},{'$inc':{'currentindex':3}})
         user=users.find_one({'id':m.from_user.id})
         y=x[user['currenttheme']]
@@ -74,7 +74,7 @@ def channelselect(m):
             kb.add(types.KeyboardButton('Назад'),types.KeyboardButton('Далее'))
             bot.send_message(m.chat.id, text, reply_markup=kb)
             
-    if m.text=='Назад':
+    if m.text=='◀':
         users.update_one({'id':user['id']},{'$inc':{'currentindex':-3}})
         user=users.find_one({'id':m.from_user.id})
         if user['currentindex']<0:
@@ -99,7 +99,7 @@ def channelselect(m):
         text+=showchannels(user,y)
         
         kb=types.ReplyKeyboardMarkup()
-        kb.add(types.KeyboardButton('Назад'),types.KeyboardButton('Далее'))
+        kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
     if m.text=='❌Отмена':
