@@ -2,7 +2,6 @@
 import os
 import telebot
 import time
-import chlenomerconfig
 import telebot
 import random
 from telebot import types
