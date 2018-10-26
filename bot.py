@@ -62,7 +62,7 @@ def channelselect(m):
         y=x[user['currenttheme']]
         text=showchannels(user,y)
         kb=types.ReplyKeyboardMarkup()
-        kb.add(types.KeyboardButton('Назад'),types.KeyboardButton('Далее'))
+        kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
         if text!='':
             bot.send_message(m.chat.id, text, reply_markup=kb)
         else:
@@ -71,7 +71,7 @@ def channelselect(m):
             y=x[user['currenttheme']]
             text=showchannels(user,y)
             kb=types.ReplyKeyboardMarkup()
-            kb.add(types.KeyboardButton('Назад'),types.KeyboardButton('Далее'))
+            kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
             bot.send_message(m.chat.id, text, reply_markup=kb)
             
     if m.text=='◀':
@@ -83,7 +83,7 @@ def channelselect(m):
         y=x[user['currenttheme']]
         text=showchannels(user,y)
         kb=types.ReplyKeyboardMarkup()
-        kb.add(types.KeyboardButton('Назад'),types.KeyboardButton('Далее'))
+        kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
         
