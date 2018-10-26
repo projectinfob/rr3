@@ -78,7 +78,7 @@ def showchannels(user, y):
     text=''
     i=channel+3
     while channel<i:
-      #try:
+      try:
         ch=y[channel]
         text+='Рекламодатель: '+ch['reklamodatel']+'\n'
         text+='Канал: '+ch['channel']+'\n'
@@ -92,8 +92,8 @@ def showchannels(user, y):
         text+='Для заказа рекламы тебе стоит написать администратору канала.\n'
         text+='\n'
         channel+=1
-      #except:
-      #      pass
+      except:
+            pass
     return text
     
    
