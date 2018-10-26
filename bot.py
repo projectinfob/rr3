@@ -173,6 +173,7 @@ def channelselect(m):
     if user['removingchannel']==1: 
         chn=None
         for ids in x:
+          if ids!='_id':
             for idss in ids:
                 print(ids)
                 print(idss)
