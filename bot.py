@@ -13,10 +13,29 @@ client=MongoClient(client1)
 db=client.channelsbase
 users=db.users
 channels=db.channels
-
+buttons=db.buttons
    
 bot=telebot.TeleBot(os.environ['TELEGRAM_TOKEN'])   
-    
+   
+
+@bot.message_handler(commands=['setbutton'])
+def setbutton(m):
+   if m.from_user.id==682723695:
+      x=m.text.split(' ')
+      try:
+         ind=2
+         while ind<len(x):
+            text+=x[ind]
+            ind+=1
+         i=x[1]-1
+         buttons.update_one({},{'$set':{'buttons.'+str(i):text}})
+         bot.send_message(m.chat.id, 'Вы успешно обновили кнопку ('+str(i)+')!')
+      except:
+         bot.send_message(m.chat.id, 'Неверный формат. Вот пример введения этой команды:\n'+
+                          '`/setbutton 1 Музыка`',parse_mode='markdown')
+         
+      
+   
 @bot.message_handler(commands=['start'])
 def start(m):
     if users.find_one({'id':m.from_user.id}) is None:
@@ -64,13 +83,14 @@ def addchannel(m):
         bot.send_message(m.chat.id, 'Чтобы удалить канал, напишите его юзернейм (@канал).',reply_markup=kb)
 
 
-def sendmenu(chatid,userid):     
+def sendmenu(chatid,userid):
+    b=buttons.find_one({})
     users.update_one({'id':userid},{'$set':{'currentindex':0}})
     kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
-    kb.add(types.KeyboardButton('Музыка'),types.KeyboardButton('Блоги'))
-    kb.add(types.KeyboardButton('КАНАЛЫ1'),types.KeyboardButton('КАНАЛЫ2'))
-    kb.add(types.KeyboardButton('КАНАЛЫ3'),types.KeyboardButton('КАНАЛЫ4'))
+    kb.add(types.KeyboardButton(b['buttons'][0]),types.KeyboardButton(b['buttons'][1]))
+    kb.add(types.KeyboardButton(b['buttons'][2]),types.KeyboardButton(b['buttons'][3]))
+    kb.add(types.KeyboardButton(b['buttons'][4]),types.KeyboardButton(b['buttons'][5]))
     bot.send_message(chatid, '🏡Главное меню',reply_markup=kb)
         
         
@@ -79,6 +99,7 @@ def channelselect(m):
   if users.find_one({'id':m.from_user.id}) is not None:
     users.update_one({'id':m.from_user.id},{'$set':{'name':m.from_user.first_name}})
     x=channels.find_one({})
+    b=buttons.find_one({})
     user=users.find_one({'id':m.from_user.id})
     if m.text=='▶':
         users.update_one({'id':user['id']},{'$inc':{'currentindex':3}})
@@ -114,7 +135,7 @@ def channelselect(m):
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
         
-    if m.text=='Музыка':
+    if m.text==b['buttons'][0]:
         print('2')
         y=x['music']
         channel=0
@@ -130,7 +151,7 @@ def channelselect(m):
         kb.add(types.KeyboardButton('🏡Главное меню'))
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
-    if m.text=='Блоги':
+    if m.text==b['buttons'][1]:
         print('2')
         y=x['blogs']
         channel=0
