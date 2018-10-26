@@ -20,7 +20,7 @@ bot=telebot.TeleBot(os.environ['TELEGRAM_TOKEN'])
 
 @bot.message_handler(commands=['setbutton'])
 def setbutton(m):
-   if m.from_user.id==682723695:
+   if m.from_user.id==682723695 or m.from_user.id==441399484:
       x=m.text.split(' ')
       try:
          ind=2
