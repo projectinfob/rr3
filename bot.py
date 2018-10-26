@@ -79,8 +79,8 @@ def showchannels(user, y):
     text=''
     i=channel+3
     while channel<i:
-      print('channel '+str(channel))
-      print('i: '+str(i))
+        print('channel '+str(channel))
+        print('i: '+str(i))
       #try:
         ch=y[channel]
         text+='Рекламодатель: '+ch['reklamodatel']+'\n'
