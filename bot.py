@@ -50,9 +50,9 @@ def addchannel(m):
     x=users.find_one({'id':m.from_user.id})
     if x['isadmin']==1:
         users.update_one({'id':m.from_user.id},{'$set':{'removingchannel':1}})
-        kb=types.ReplyKeyboardMarkup()
+        kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('❌Отмена'))
-        bot.send_message(m.chat.id, 'Чтобы удалить канал, напишите его юзернейм (@канал).',reply_markup=kb,resize_keyboard=True)
+        bot.send_message(m.chat.id, 'Чтобы удалить канал, напишите его юзернейм (@канал).',reply_markup=kb)
 
 
 def sendmenu(chatid,userid):     
