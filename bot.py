@@ -96,7 +96,12 @@ def showchannels(user, y):
       #      pass
     return text
     
-    
+   
+def themetoname(x):
+   if x=='music':
+      return 'Музыка'
+   
+   
 def createuser(id,name,username): 
    return{'id':id,
           'name':name,
