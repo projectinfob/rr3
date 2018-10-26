@@ -112,9 +112,9 @@ def channelselect(m):
         
         text+=showchannels(user,y)
         
-        kb=types.ReplyKeyboardMarkup()
+        kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
-        bot.send_message(m.chat.id, text, reply_markup=kb,resize_keyboard=True)
+        bot.send_message(m.chat.id, text, reply_markup=kb)
         
     if m.text=='Блоги':
         print('2')
@@ -127,9 +127,9 @@ def channelselect(m):
         
         text+=showchannels(user,y)
         
-        kb=types.ReplyKeyboardMarkup()
+        kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
-        bot.send_message(m.chat.id, text, reply_markup=kb,resize_keyboard=True)
+        bot.send_message(m.chat.id, text, reply_markup=kb)
         
     if m.text=='❌Отмена':
         if user['addingchannel']==1:
