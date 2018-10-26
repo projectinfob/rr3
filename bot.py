@@ -75,6 +75,7 @@ def channelselect(m):
     
 def showchannels(user, y):
     channel=user['currentindex']
+    text=''
     i=channel+3
     while channel<i:
       #try:
