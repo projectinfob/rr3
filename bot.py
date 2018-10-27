@@ -14,9 +14,11 @@ db=client.channelsbase
 users=db.users
 channels=db.channels
 buttons=db.buttons
+codebuttons=db.codebuttons
    
 bot=telebot.TeleBot(os.environ['TELEGRAM_TOKEN'])   
-   
+
+users.update_many({},{'$set':{'setcode':0,'codenumber':None}})
 
 @bot.message_handler(commands=['setbutton'])
 def setbutton(m):
@@ -34,7 +36,9 @@ def setbutton(m):
          print(text)
          i=int(x[1])-1
          buttons.update_one({},{'$set':{'buttons.'+str(i):text}})
-         bot.send_message(m.chat.id, 'Вы успешно обновили кнопку ('+str(i+1)+')!')
+         users.update_one({'id':m.from_user.id},{'$set':{'codenumber':i}})
+         bot.send_message(m.chat.id, 'Вы успешно обновили кнопку ('+str(i+1)+')! Теперь отправьте её отображение на канале.')
+         users.update_one({'id':m.from_user.id},{'$set':{'setcode':1}})
          u=users.find({})
          for ids in u:
             try:
@@ -149,7 +153,7 @@ def channelselect(m):
             kb.add(types.KeyboardButton('🏡Главное меню'))
             bot.send_message(m.chat.id, text, reply_markup=kb)
             
-    if m.text=='◀':
+    elif m.text=='◀':
         users.update_one({'id':user['id']},{'$inc':{'currentindex':-3}})
         user=users.find_one({'id':m.from_user.id})
         if user['currentindex']<0:
@@ -163,25 +167,25 @@ def channelselect(m):
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
         
-    if m.text==b['buttons']['0']:
+    elif m.text==b['buttons']['0']:
       showcategory('music',m.from_user.id,m.chat.id,x)
         
-    if m.text==b['buttons']['1']:
+    elif m.text==b['buttons']['1']:
         showcategory('blogs',m.from_user.id,m.chat.id,x)
             
-    if m.text==b['buttons']['2']:
+    elif m.text==b['buttons']['2']:
       showcategory('crypto',m.from_user.id,m.chat.id,x)
       
-    if m.text==b['buttons']['3']:
+    elif m.text==b['buttons']['3']:
       showcategory('sport',m.from_user.id,m.chat.id,x)
       
-    if m.text==b['buttons']['4']:
+    elif m.text==b['buttons']['4']:
       showcategory('intim',m.from_user.id,m.chat.id,x)
       
-    if m.text==b['buttons']['5']:
+    elif m.text==b['buttons']['5']:
       showcategory('citats',m.from_user.id,m.chat.id,x)
         
-    if m.text=='❌Отмена':
+    elif m.text=='❌Отмена':
         if user['addingchannel']==1:
             users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':0}})
             bot.send_message(m.chat.id, 'Добавление канала отменено.')
@@ -199,10 +203,10 @@ def channelselect(m):
             bot.send_message(m.chat.id, 'Удаление администратора отменено.')
             sendmenu(m.chat.id, m.from_user.id)
                
-    if m.text=='🏡Главное меню':
+    elif m.text=='🏡Главное меню':
         sendmenu(m.chat.id, m.from_user.id)
         
-    if m.text=='📮Продать рекламу':
+    elif m.text=='📮Продать рекламу':
         bot.send_message(m.chat.id,'Для добавления бота в каталог напишите [администратору](tg://user?id='+str(682723695)+').',parse_mode='markdown')                   
             
     user=users.find_one({'id':m.from_user.id})
@@ -254,7 +258,7 @@ def channelselect(m):
       except:
            bot.send_message(m.chat.id, 'Неправильно введены аргументы для добавления канала!')
             
-    if user['removingchannel']==1: 
+    elif user['removingchannel']==1: 
         chn=None
         ii=None
         for ids in x:
@@ -275,7 +279,7 @@ def channelselect(m):
         else:
             bot.send_message(m.chat.id, 'Такого канала не существует!')
             
-    if user['addingadmin']==1:
+    elif user['addingadmin']==1:
         adm=users.find_one({'id':int(m.text)})
         if adm!=None:
             users.update_one({'id':adm['id']},{'$set':{'isadmin':1}})
@@ -284,7 +288,7 @@ def channelselect(m):
         else:
             bot.send_message(m.chat.id, 'Юзер с таким id не регистрировался в боте!')
             
-    if user['removingadmin']==1:
+    elif user['removingadmin']==1:
         adm=users.find_one({'id':int(m.text)})
         if adm!=None:
             users.update_one({'id':adm['id']},{'$set':{'isadmin':0}})
@@ -292,6 +296,11 @@ def channelselect(m):
             users.update_one({'id':m.from_user.id},{'$set':{'removingadmin':0}})
         else:
             bot.send_message(m.chat.id, 'Юзер с таким id не регистрировался в боте!')
+            
+    elif user['setcode']==1:
+        codebuttons.update_one({},{'$set':{'codebuttons.'+str(user['codenumber']):m.text}})
+        
+        
         
   else:
       bot.send_message(m.chat.id, 'Сначала напишите боту /start!')
@@ -340,33 +349,35 @@ def showchannels(user, y):
     
    
 def nametotheme(x):
-    if x=='музыка':
+    z=codebuttons.find({})
+    if x==z['codebuttons']['0']:
         return 'music'
-    elif x=='блоги':
+    elif x==z['codebuttons']['1']:
         return 'blogs'
-    elif x=='крипта':
+    elif x==z['codebuttons']['2']:
         return 'crypto'
-    elif x=='спорт':
+    elif x==z['codebuttons']['3']:
         return 'sport'
-    elif x=='интим':
+    elif x==z['codebuttons']['4']:
         return 'intim'
-    elif x=='цитатки' or x=='цитаты':
+    elif x==z['codebuttons']['5']:
         return 'citats'
 
 
 def themetoname(x):
+   z=codebuttons.find({})
    if x=='music':
-      return 'Музыка'
+      return z['codebuttons']['0']
    if x=='blogs':
-      return 'Блоги'
+      return z['codebuttons']['1']
    if x=='crypto':
-      return 'Крипта'
+      return z['codebuttons']['2']
    if x=='sport':
-      return 'Спорт'
+      return z['codebuttons']['3']
    if x=='intim':
-      return 'Интим'
+      return z['codebuttons']['4']
    if x=='citats':
-      return 'Цитаты'
+      return z['codebuttons']['5']
    
    
 def createuser(id,name,username): 
@@ -383,7 +394,9 @@ def createuser(id,name,username):
           'isadmin':adm,
           'removingchannel':0,
           'addingadmin':0,
-          'removingadmin':0
+          'removingadmin':0,
+          'setcode':0,
+          'codenumber':None
          }
       
       
