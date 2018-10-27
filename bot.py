@@ -350,7 +350,7 @@ def showchannels(user, y):
     
    
 def nametotheme(x):
-    z=codebuttons.find({})
+  z=codebuttons.find_one({})
     if x==z['codebuttons']['0']:
         return 'music'
     elif x==z['codebuttons']['1']:
@@ -366,7 +366,7 @@ def nametotheme(x):
 
 
 def themetoname(x):
-   z=codebuttons.find({})
+   z=codebuttons.find_one({})
    if x=='music':
       return z['codebuttons']['0']
    if x=='blogs':
