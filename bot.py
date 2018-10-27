@@ -104,8 +104,8 @@ def showcategory(category,userid,chatid,x):
         y=x[category]
         channel=0
         text=''
-        users.update_one({'id':m.from_user.id},{'$set':{'currenttheme':category}})
-        users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
+        users.update_one({'id':userid},{'$set':{'currenttheme':category}})
+        users.update_one({'id':userid},{'$set':{'currentindex':0}})
         user=users.find_one({'id':userid})
         text+=showchannels(user,y)
         kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
