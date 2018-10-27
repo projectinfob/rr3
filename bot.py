@@ -217,7 +217,7 @@ def channelselect(m):
             
     user=users.find_one({'id':m.from_user.id})
     if user['addingchannel']==1:
-      #try:
+      try:
         y=m.text.split('\n')
         print(y)
         reklamodatel=y[0]
@@ -261,8 +261,8 @@ def channelselect(m):
               pass
         bot.send_message(m.chat.id, 'Канал отправлен '+str(sendto)+' подписчикам!')
         sendmenu(m.chat.id, m.from_user.id)
-      #except:
-      #     bot.send_message(m.chat.id, 'Неправильно введены аргументы для добавления канала!')
+      except:
+           bot.send_message(m.chat.id, 'Неправильно введены аргументы для добавления канала!')
             
     elif user['removingchannel']==1: 
         chn=None
