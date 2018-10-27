@@ -154,7 +154,10 @@ def channelselect(m):
         kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
         kb.add(types.KeyboardButton('🏡Главное меню'))
-        bot.send_message(m.chat.id, text, reply_markup=kb)
+        try:
+            bot.send_message(m.chat.id, text, reply_markup=kb)
+        except:
+            bot.send_message(m.chat.id, 'В этой категории пока что нет ни одного канала!')
         
     if m.text==b['buttons']['1']:
         print('2')
@@ -170,7 +173,29 @@ def channelselect(m):
         kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
         kb.add(types.KeyboardButton('🏡Главное меню'))
-        bot.send_message(m.chat.id, text, reply_markup=kb)
+        try:
+            bot.send_message(m.chat.id, text, reply_markup=kb)
+        except:
+            bot.send_message(m.chat.id, 'В этой категории пока что нет ни одного канала!')
+            
+    if m.text==b['buttons']['2']:
+        print('2')
+        y=x['blogs']
+        channel=0
+        text=''
+        users.update_one({'id':m.from_user.id},{'$set':{'currenttheme':'blogs'}})
+        users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
+        user=users.find_one({'id':m.from_user.id})
+        
+        text+=showchannels(user,y)
+        
+        kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
+        kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
+        kb.add(types.KeyboardButton('🏡Главное меню'))
+        try:
+            bot.send_message(m.chat.id, text, reply_markup=kb)
+        except:
+            bot.send_message(m.chat.id, 'В этой категории пока что нет ни одного канала!')
         
     if m.text=='❌Отмена':
         if user['addingchannel']==1:
@@ -335,6 +360,14 @@ def nametotheme(x):
         return 'music'
     elif x=='блоги':
         return 'blogs'
+    elif x=='крипта':
+        return 'crypto'
+    elif x=='спорт':
+        return 'sport'
+    elif x=='Интим':
+        return 'intim'
+    elif x=='цитатки' or x=='цитаты':
+        return 'citats'
 
 
 def themetoname(x):
@@ -342,6 +375,14 @@ def themetoname(x):
       return 'Музыка'
    if x=='blogs':
       return 'Блоги'
+   if x=='crypto':
+      return 'Крипта'
+   if x=='sport':
+      return 'Спорт'
+   if x=='intim':
+      return 'Интим'
+   if x=='citats':
+      return 'Цитаты'
    
    
 def createuser(id,name,username): 
