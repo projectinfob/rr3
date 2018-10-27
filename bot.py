@@ -98,7 +98,24 @@ def sendmenu(chatid,userid):
     kb.add(types.KeyboardButton(b['buttons']['4']),types.KeyboardButton(b['buttons']['5']))
     bot.send_message(chatid, '🏡Главное меню',reply_markup=kb)
         
-        
+   
+   
+def showcategory(category,userid,chatid,x):
+        y=x[category]
+        channel=0
+        text=''
+        users.update_one({'id':m.from_user.id},{'$set':{'currenttheme':category}})
+        users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
+        user=users.find_one({'id':userid})
+        text+=showchannels(user,y)
+        kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
+        kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
+        kb.add(types.KeyboardButton('🏡Главное меню'))
+        try:
+            bot.send_message(chatid, text, reply_markup=kb)
+        except:
+            bot.send_message(chatid, 'В этой категории пока что нет ни одного канала!')
+   
 @bot.message_handler()
 def channelselect(m):
   if users.find_one({'id':m.from_user.id}) is not None:
@@ -141,61 +158,22 @@ def channelselect(m):
         
         
     if m.text==b['buttons']['0']:
-        print('2')
-        y=x['music']
-        channel=0
-        text=''
-        users.update_one({'id':m.from_user.id},{'$set':{'currenttheme':'music'}})
-        users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
-        user=users.find_one({'id':m.from_user.id})
-        
-        text+=showchannels(user,y)
-        
-        kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
-        kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
-        kb.add(types.KeyboardButton('🏡Главное меню'))
-        try:
-            bot.send_message(m.chat.id, text, reply_markup=kb)
-        except:
-            bot.send_message(m.chat.id, 'В этой категории пока что нет ни одного канала!')
+      showcategory('music',m.from_user.id,m.chat.id,x)
         
     if m.text==b['buttons']['1']:
-        print('2')
-        y=x['blogs']
-        channel=0
-        text=''
-        users.update_one({'id':m.from_user.id},{'$set':{'currenttheme':'blogs'}})
-        users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
-        user=users.find_one({'id':m.from_user.id})
-        
-        text+=showchannels(user,y)
-        
-        kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
-        kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
-        kb.add(types.KeyboardButton('🏡Главное меню'))
-        try:
-            bot.send_message(m.chat.id, text, reply_markup=kb)
-        except:
-            bot.send_message(m.chat.id, 'В этой категории пока что нет ни одного канала!')
+        showcategory('blogs',m.from_user.id,m.chat.id,x)
             
     if m.text==b['buttons']['2']:
-        print('2')
-        y=x['blogs']
-        channel=0
-        text=''
-        users.update_one({'id':m.from_user.id},{'$set':{'currenttheme':'blogs'}})
-        users.update_one({'id':m.from_user.id},{'$set':{'currentindex':0}})
-        user=users.find_one({'id':m.from_user.id})
-        
-        text+=showchannels(user,y)
-        
-        kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
-        kb.add(types.KeyboardButton('◀'),types.KeyboardButton('▶'))
-        kb.add(types.KeyboardButton('🏡Главное меню'))
-        try:
-            bot.send_message(m.chat.id, text, reply_markup=kb)
-        except:
-            bot.send_message(m.chat.id, 'В этой категории пока что нет ни одного канала!')
+      showcategory('crypto',m.from_user.id,m.chat.id,x)
+      
+    if m.text==b['buttons']['3']:
+      showcategory('sport',m.from_user.id,m.chat.id,x)
+      
+    if m.text==b['buttons']['4']:
+      showcategory('intim',m.from_user.id,m.chat.id,x)
+      
+    if m.text==b['buttons']['5']:
+      showcategory('citats',m.from_user.id,m.chat.id,x)
         
     if m.text=='❌Отмена':
         if user['addingchannel']==1:
