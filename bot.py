@@ -293,6 +293,7 @@ def channelselect(m):
     elif user['setcode']==1:
         codebuttons.update_one({},{'$set':{'codebuttons.'+str(user['codenumber']):m.text}})
         bot.send_message(m.chat.id, 'Обновление кнопки завершено!')
+        users.update_one({'id':m.from_user.id},{'$set':{'setcode':0}})
         u=users.find({})
         for ids in u:
           try:
