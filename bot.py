@@ -225,7 +225,7 @@ def channelselect(m):
         subs=int(y[2])
         cost=int(y[3])
         discount=int(y[4])
-        theme=nametotheme(y[5].lower())
+        theme=nametotheme(y[5])
         piar=y[6]
         conditions=y[7]
         reklamodatel+=''
