@@ -51,7 +51,7 @@ def binfo(m):
    text=''
    i=1
    for ids in u['codebuttons']:
-      text+='Кнопка '+str(i)+': '+u['codebuttons'][ids]
+      text+='Кнопка '+str(i)+': '+u['codebuttons'][ids]+'\n'
       i+=1
    bot.send_message(m.chat.id, text)
    
