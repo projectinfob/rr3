@@ -92,7 +92,7 @@ def sendmenu(chatid,userid):
     b=buttons.find_one({})
     users.update_one({'id':userid},{'$set':{'currentindex':0}})
     kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
-    kb.add(types.KeyboardButton('📮ПРОДАТЬ РЕКЛАМУ'))
+    kb.add(types.KeyboardButton('📮Продать рекламу'))
     kb.add(types.KeyboardButton(b['buttons']['0']),types.KeyboardButton(b['buttons']['1']))
     kb.add(types.KeyboardButton(b['buttons']['2']),types.KeyboardButton(b['buttons']['3']))
     kb.add(types.KeyboardButton(b['buttons']['4']),types.KeyboardButton(b['buttons']['5']))
@@ -192,6 +192,9 @@ def channelselect(m):
                
     if m.text=='🏡Главное меню':
         sendmenu(m.chat.id, m.from_user.id)
+        
+    if m.text=='📮Продать рекламу':
+        bot.send_message(m.chat.id,'Для добавления бота в каталог напишите [администратору](tg://user?id='+str(682723695)+').',parse_mode='markdown')                   
             
     user=users.find_one({'id':m.from_user.id})
     if user['addingchannel']==1:
@@ -217,6 +220,27 @@ def channelselect(m):
         channels.update_one({},{'$push':{theme:createchannel(reklamodatel,channel,subs,cost,discount,theme,piar,conditions)}})
         bot.send_message(m.chat.id, 'Канал успешно добавлен!')
         users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':0}})
+        u=users.find({})
+        finalcost=round(cost-(cost*(discount*0.01)),1)
+        text=''
+        text+='👤Рекламодатель: '+reklamodatel+'\n'
+        text+='📺Канал: '+channel+'\n'
+        text+='📊Подписчиков: '+subs+'\n'
+        text+='💶Цена: '+cost+'\n'
+        text+='💳Скидка: '+discount+'\n'
+        text+='🤑Итоговая цена: '+finalcost+'\n'
+        text+='📗Тематика: '+themetoname(theme)+'\n'
+        text+='🔁Взаимный пиар: '+piar+'\n'
+        text+='📋Условия: '+conditions+'\n'
+        text+='ℹДля заказа рекламы тебе стоит написать администратору канала.'
+        sendto=0
+        for ids in u:
+            try:
+              bot.send_message(ids['id'], text)
+              sendto+=1
+            except:
+              pass
+        bot.send_message(m.chat.id, 'Канал отправлен '+str(sendto)+' подписчикам!')
         sendmenu(m.chat.id, m.from_user.id)
       except:
            bot.send_message(m.chat.id, 'Неправильно введены аргументы для добавления канала!')
