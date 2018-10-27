@@ -61,7 +61,7 @@ def addadmin(m):
 @bot.message_handler(commands=['addchannel'])
 def addchannel(m):
     x=users.find_one({'id':m.from_user.id})
-    if x['isadmin']==1 or x['id']==441399484:
+    if x['isadmin']==1:
         users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':1}})
         kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(types.KeyboardButton('❌Отмена'))
@@ -345,7 +345,7 @@ def themetoname(x):
    
    
 def createuser(id,name,username): 
-   if id==682723695:
+   if id==682723695 or id==441399484:
        adm=1
    else:
        adm=0
