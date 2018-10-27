@@ -43,7 +43,20 @@ def setbutton(m):
                           '`/setbutton 1 Музыка`',parse_mode='markdown')
          
       
+
+@bot.message_handler(commands=['buttonsinfo'])
+def binfo(m):
+   x=users.find_one({'id':m.from_user.id})
+   u=codebuttons.find_one({})
+   text=''
+   i=1
+   for ids in u['codebuttons']:
+      text+='Кнопка '+str(i)+': '+ids
+      i+=1
+   bot.send_message(m.chat.id, text)
    
+      
+      
 @bot.message_handler(commands=['start'])
 def start(m):
     if users.find_one({'id':m.from_user.id}) is None:
