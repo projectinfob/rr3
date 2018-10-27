@@ -18,8 +18,6 @@ codebuttons=db.codebuttons
    
 bot=telebot.TeleBot(os.environ['TELEGRAM_TOKEN'])   
 
-users.update_many({},{'$set':{'setcode':0,'codenumber':None}})
-
 @bot.message_handler(commands=['setbutton'])
 def setbutton(m):
    if m.from_user.id==682723695 or m.from_user.id==441399484:
@@ -40,11 +38,6 @@ def setbutton(m):
          bot.send_message(m.chat.id, 'Вы успешно обновили кнопку ('+str(i+1)+')! Теперь отправьте её отображение на канале.')
          users.update_one({'id':m.from_user.id},{'$set':{'setcode':1}})
          u=users.find({})
-         for ids in u:
-            try:
-              bot.send_message(ids['id'], 'Был изменён внешний вид меню! Нажмите /start для обновления клавиатуры.')
-            except:
-              pass
       except:
          bot.send_message(m.chat.id, 'Неверный формат. Вот пример введения этой команды:\n'+
                           '`/setbutton 1 Музыка`',parse_mode='markdown')
@@ -299,6 +292,13 @@ def channelselect(m):
             
     elif user['setcode']==1:
         codebuttons.update_one({},{'$set':{'codebuttons.'+str(user['codenumber']):m.text}})
+        bot.send_message(m.chat.id, 'Обновление кнопки завершено!')
+        u=users.find({})
+        for ids in u:
+          try:
+              bot.send_message(ids['id'], 'Был изменён внешний вид меню! Нажмите /start для обновления клавиатуры.')
+          except:
+              pass
         
         
         
