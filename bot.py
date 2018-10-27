@@ -95,7 +95,7 @@ def addchannel(m):
         
         
 @bot.message_handler(commands=['delchannel'])
-def addchannel(m):
+def dellchannel(m):
     x=users.find_one({'id':m.from_user.id})
     if x['isadmin']==1:
         users.update_one({'id':m.from_user.id},{'$set':{'removingchannel':1}})
