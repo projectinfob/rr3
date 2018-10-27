@@ -35,6 +35,12 @@ def setbutton(m):
          i=int(x[1])-1
          buttons.update_one({},{'$set':{'buttons.'+str(i):text}})
          bot.send_message(m.chat.id, 'Вы успешно обновили кнопку ('+str(i+1)+')!')
+         u=users.find({})
+         for ids in u:
+            try:
+              bot.send_message(ids['id'], 'Был изменён внешний вид меню! Нажмите /start для обновления клавиатуры.')
+            except:
+              pass
       except:
          bot.send_message(m.chat.id, 'Неверный формат. Вот пример введения этой команды:\n'+
                           '`/setbutton 1 Музыка`',parse_mode='markdown')
