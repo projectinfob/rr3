@@ -118,10 +118,28 @@ def sendmenu(chatid,userid):
 #    kb.add(types.KeyboardButton(b['buttons']['4']),types.KeyboardButton(b['buttons']['5']))
    
 def showcategory(category,userid,chatid,x):
-        y=x[category]
+        b=codebuttons.find_one({})
+        if category==b['channels'][0]:
+            y=x[0]
+            i=0
+        if category==b['channels'][1]:
+            y=x[1]
+            i=1
+        if category==b['channels'][2]:
+            y=x[2]
+            i=2
+        if category==b['channels'][3]:
+            y=x[3]
+            i=3
+        if category==b['channels'][4]:
+            y=x[4]
+            i=4
+        if category==b['channels'][5]:
+            y=x[5]
+            i=5
         channel=0
         text=''
-        users.update_one({'id':userid},{'$set':{'currenttheme':category}})
+        users.update_one({'id':userid},{'$set':{'currenttheme':i}})
         users.update_one({'id':userid},{'$set':{'currentindex':0}})
         user=users.find_one({'id':userid})
         text+=showchannels(user,y)
@@ -142,9 +160,16 @@ def sellchannel(id):
     bot.send_message(id,'Укажите юзернейм вашего канала следующим сообщением.',reply_markup=kb)
     users.update_one({'id':id},{'$push':{'actions':'sc','actions':'sc_name'}})
 
-def showchannels(id):
-    
-    
+def showchannelss(id):
+    b=buttons.find_one({})
+    c=codebuttons.find_one({})
+    kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
+    kb.add(types.KeyboardButton(b['channels'][0]),types.KeyboardButton(b['channels'][1]))
+    kb.add(types.KeyboardButton(b['channels'][2]),types.KeyboardButton(b['channels'][3]))
+    kb.add(types.KeyboardButton(b['channels'][4]),types.KeyboardButton(b['channels'][5]))
+    bot.send_message(id,c['mainmenu'][1]) 
+   
+   
     
 @bot.message_handler()
 def channelselect(m):
@@ -152,6 +177,7 @@ def channelselect(m):
     users.update_one({'id':m.from_user.id},{'$set':{'name':m.from_user.first_name}})
     x=channels.find_one({})
     b=codebuttons.find_one({})
+    c=buttons.find_one({})
     user=users.find_one({'id':m.from_user.id})
     if m.text=='▶':
         users.update_one({'id':user['id']},{'$inc':{'currentindex':3}})
@@ -191,7 +217,7 @@ def channelselect(m):
       sellchannel()
         
     elif m.text==b['mainmenu']['1']:
-        showchannels()
+        showchannelss()
             
     elif m.text==b['mainmenu']['2']:
       showbots()
@@ -201,6 +227,25 @@ def channelselect(m):
       
     elif m.text==b['mainmenu']['4']:
       ballance()
+      
+      
+    elif m.text==c['channels'][0]:
+       showcategory(b['channels'][0],m.from_user.id,m.chat.id,x)
+       
+    elif m.text==c['channels'][1]:
+       showcategory(b['channels'][1],m.from_user.id,m.chat.id,x)
+           
+    elif m.text==c['channels'][2]:
+       showcategory(b['channels'][2],m.from_user.id,m.chat.id,x)
+     
+    elif m.text==c['channels'][3]:
+       showcategory(b['channels'][3],m.from_user.id,m.chat.id,x)
+     
+    elif m.text==c['channels'][4]:
+       showcategory(b['channels'][4],m.from_user.id,m.chat.id,x)
+     
+    elif m.text==c['channels'][5]:
+       showcategory(b['channels'][5],m.from_user.id,m.chat.id,x)
       
         
     elif m.text=='❌Отмена':
@@ -214,7 +259,7 @@ def channelselect(m):
         bot.send_message(m.chat.id,'Для добавления бота в каталог напишите [администратору](tg://user?id='+str(682723695)+').',parse_mode='markdown')                   
             
     user=users.find_one({'id':m.from_user.id})
-    if user['addingchannel']==1:
+    if 'addingchannel' in user['actions']:
       try:
         y=m.text.split('\n')
         print(y)
@@ -236,7 +281,7 @@ def channelselect(m):
         conditions+=''
         channels.update_one({},{'$push':{theme:createchannel(reklamodatel,channel,subs,cost,discount,theme,piar,conditions)}})
         bot.send_message(m.chat.id, 'Канал успешно добавлен!')
-        users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':0}})
+        users.update_one({'id':m.from_user.id},{'$pull':{'actions':'addingchannel'}})
         u=users.find({})
         finalcost=round(cost-(cost*(discount*0.01)),1)
         text=''
