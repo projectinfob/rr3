@@ -105,16 +105,17 @@ def dellchannel(m):
 
 
 def sendmenu(chatid,userid):
-    b=buttons.find_one({})
+    b=codebuttons.find_one({})
     users.update_one({'id':userid},{'$set':{'currentindex':0}})
     kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
-    kb.add(types.KeyboardButton('📮Продать рекламу'))
-    kb.add(types.KeyboardButton(b['buttons']['0']),types.KeyboardButton(b['buttons']['1']))
-    kb.add(types.KeyboardButton(b['buttons']['2']),types.KeyboardButton(b['buttons']['3']))
-    kb.add(types.KeyboardButton(b['buttons']['4']),types.KeyboardButton(b['buttons']['5']))
+    kb.add(types.KeyboardButton(b['mainmenu'][0]))
+    kb.add(types.KeyboardButton(b['mainmenu'][1]),types.KeyboardButton(b['mainmenu'][2]))
+    kb.add(types.KeyboardButton(b['mainmenu'][3]),types.KeyboardButton(b['mainmenu'][4]))
     bot.send_message(chatid, '🏡Главное меню',reply_markup=kb)
         
-   
+#kb.add(types.KeyboardButton(b['buttons']['0']),types.KeyboardButton(b['buttons']['1']))
+#    kb.add(types.KeyboardButton(b['buttons']['2']),types.KeyboardButton(b['buttons']['3']))
+#    kb.add(types.KeyboardButton(b['buttons']['4']),types.KeyboardButton(b['buttons']['5']))
    
 def showcategory(category,userid,chatid,x):
         y=x[category]
@@ -132,12 +133,25 @@ def showcategory(category,userid,chatid,x):
         except:
             bot.send_message(chatid, 'В этой категории пока что нет ни одного канала!')
    
+
+def sellchannel(id):
+    x=get_full_channel('@cookiewarsupdates')
+    print(x)
+    kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
+    kb.add(types.KeyboardButton('❌Отмена'))
+    bot.send_message(id,'Укажите юзернейм вашего канала следующим сообщением.',reply_markup=kb)
+    users.update_one({'id':id},{'$push':{'actions':'sc','actions':'sc_name'}})
+
+def showchannels(id):
+    
+    
+    
 @bot.message_handler()
 def channelselect(m):
   if users.find_one({'id':m.from_user.id}) is not None:
     users.update_one({'id':m.from_user.id},{'$set':{'name':m.from_user.first_name}})
     x=channels.find_one({})
-    b=buttons.find_one({})
+    b=codebuttons.find_one({})
     user=users.find_one({'id':m.from_user.id})
     if m.text=='▶':
         users.update_one({'id':user['id']},{'$inc':{'currentindex':3}})
@@ -173,41 +187,25 @@ def channelselect(m):
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
         
-    elif m.text==b['buttons']['0']:
-      showcategory('music',m.from_user.id,m.chat.id,x)
+    elif m.text==b['mainmenu']['0']:
+      sellchannel()
         
-    elif m.text==b['buttons']['1']:
-        showcategory('blogs',m.from_user.id,m.chat.id,x)
+    elif m.text==b['mainmenu']['1']:
+        showchannels()
             
-    elif m.text==b['buttons']['2']:
-      showcategory('crypto',m.from_user.id,m.chat.id,x)
+    elif m.text==b['mainmenu']['2']:
+      showbots()
       
-    elif m.text==b['buttons']['3']:
-      showcategory('sport',m.from_user.id,m.chat.id,x)
+    elif m.text==b['mainmenu']['3']:
+      stats()
       
-    elif m.text==b['buttons']['4']:
-      showcategory('intim',m.from_user.id,m.chat.id,x)
+    elif m.text==b['mainmenu']['4']:
+      ballance()
       
-    elif m.text==b['buttons']['5']:
-      showcategory('citats',m.from_user.id,m.chat.id,x)
         
     elif m.text=='❌Отмена':
-        if user['addingchannel']==1:
-            users.update_one({'id':m.from_user.id},{'$set':{'addingchannel':0}})
-            bot.send_message(m.chat.id, 'Добавление канала отменено.')
-            sendmenu(m.chat.id, m.from_user.id)
-        if user['removingchannel']==1:
-            users.update_one({'id':m.from_user.id},{'$set':{'removingchannel':0}})
-            bot.send_message(m.chat.id, 'Удаление канала отменено.')
-            sendmenu(m.chat.id, m.from_user.id)
-        if user['addingadmin']==1:
-            users.update_one({'id':m.from_user.id},{'$set':{'addingadmin':0}})
-            bot.send_message(m.chat.id, 'Добавление администратора отменено.')
-            sendmenu(m.chat.id, m.from_user.id)
-        if user['removingadmin']==1:
-            users.update_one({'id':m.from_user.id},{'$set':{'removingadmin':0}})
-            bot.send_message(m.chat.id, 'Удаление администратора отменено.')
-            sendmenu(m.chat.id, m.from_user.id)
+        users.update_one({'id':m.from_user.id},{'$set':{'actions':[]}})
+        sendmenu(m.chat.id, m.from_user.id)
                
     elif m.text=='🏡Главное меню':
         sendmenu(m.chat.id, m.from_user.id)
@@ -404,13 +402,14 @@ def createuser(id,name,username):
           'username':username,
           'currenttheme':None,
           'currentindex':0,
-          'addingchannel':0,
+          #'addingchannel':0,
           'isadmin':adm,
-          'removingchannel':0,
-          'addingadmin':0,
-          'removingadmin':0,
-          'setcode':0,
-          'codenumber':None
+          #'removingchannel':0,
+          #'addingadmin':0,
+          #'removingadmin':0,
+          #'setcode':0,
+          'codenumber':None,
+          'actions':[]
          }
       
       
