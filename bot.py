@@ -22,26 +22,14 @@ bot=telebot.TeleBot(os.environ['TELEGRAM_TOKEN'])
 def setbutton(m):
    if m.from_user.id==682723695 or m.from_user.id==441399484:
       x=m.text.split(' ')
-      try:
-         text=''
-         ind=2
-         c=0
-         while ind<len(x):
-            text+=x[ind]+' '
-            ind+=1
-         c=len(text)
-         text=text[:c-1]
-         print(text)
-         i=int(x[1])-1
-         buttons.update_one({},{'$set':{'buttons.'+str(i):text}})
-         users.update_one({'id':m.from_user.id},{'$set':{'codenumber':i}})
-         bot.send_message(m.chat.id, 'Вы успешно обновили кнопку ('+str(i+1)+')! Теперь отправьте её отображение на канале.')
-         users.update_one({'id':m.from_user.id},{'$set':{'setcode':1}})
-         u=users.find({})
-      except:
-         bot.send_message(m.chat.id, 'Неверный формат. Вот пример введения этой команды:\n'+
-                          '`/setbutton 1 Музыка`',parse_mode='markdown')
-         
+      i=3
+      txt=''
+      while i<len(x-1):
+         txt+=x[i]+' '
+         i+=1
+      if x[1]=='Главное меню':
+         codebuttons.update_one({},{'$set':{'mainmenu.'+x[2]:txt}})
+         bot.send_message(m.chat.id, 'Кнопка успешно обновлена!')
       
 
 @bot.message_handler(commands=['buttonsinfo'])
