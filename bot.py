@@ -315,7 +315,7 @@ def channelselect(m):
       except:
            bot.send_message(m.chat.id, 'Неправильно введены аргументы для добавления канала!')
             
-    elif user['removingchannel']==1: 
+    elif 'removingchannel' in user['actions']: 
         chn=None
         ii=None
         for ids in x:
@@ -336,7 +336,7 @@ def channelselect(m):
         else:
             bot.send_message(m.chat.id, 'Такого канала не существует!')
             
-    elif user['addingadmin']==1:
+    elif 'addingadmin' in user['actions']:
         adm=users.find_one({'id':int(m.text)})
         if adm!=None:
             users.update_one({'id':adm['id']},{'$set':{'isadmin':1}})
@@ -345,7 +345,7 @@ def channelselect(m):
         else:
             bot.send_message(m.chat.id, 'Юзер с таким id не регистрировался в боте!')
             
-    elif user['removingadmin']==1:
+    elif 'removingadmin' in user['actions']:
         adm=users.find_one({'id':int(m.text)})
         if adm!=None:
             users.update_one({'id':adm['id']},{'$set':{'isadmin':0}})
@@ -353,18 +353,7 @@ def channelselect(m):
             users.update_one({'id':m.from_user.id},{'$set':{'removingadmin':0}})
         else:
             bot.send_message(m.chat.id, 'Юзер с таким id не регистрировался в боте!')
-            
-    elif user['setcode']==1:
-        codebuttons.update_one({},{'$set':{'codebuttons.'+str(user['codenumber']):m.text}})
-        bot.send_message(m.chat.id, 'Обновление кнопки завершено!')
-        users.update_one({'id':m.from_user.id},{'$set':{'setcode':0}})
-        u=users.find({})
-        for ids in u:
-          try:
-              bot.send_message(ids['id'], 'Был изменён внешний вид меню! Нажмите /start для обновления клавиатуры.')
-          except:
-              pass
-        
+
         
         
   else:
