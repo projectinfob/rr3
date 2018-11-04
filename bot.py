@@ -224,7 +224,9 @@ def channelselect(m):
         showchannelss(m.from_user.id)
             
     elif m.text==b['mainmenu'][2]:
-      showbots(m.from_user.id)
+      g=bots.find_one({})
+      g=g['bots']
+      showbots(m.from_user.id,g)
       
     elif m.text==b['mainmenu'][3]:
       stats(m.from_user.id)
@@ -391,6 +393,24 @@ def showchannels(user, y):
         text+='🔁Взаимный пиар: '+ch['piar']+'\n'
         text+='📋Условия: '+ch['conditions']+'\n'
         text+='ℹДля заказа рекламы тебе стоит написать администратору канала.\n'
+        text+='\n'
+      except:
+            pass
+      channel+=1
+    return text
+
+
+def showbots(user, y):
+    channel=user['currentindex']
+    text=''
+    i=channel+3
+    while channel<i:
+      print('channel '+str(channel))
+      print('i: '+str(i))
+      try:
+        ch=y[channel]
+        text+='📺Бот: '+ch['channel']+'\n'
+        text+='📋Описание: '+ch['conditions']+'\n'
         text+='\n'
       except:
             pass
