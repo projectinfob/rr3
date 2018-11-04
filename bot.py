@@ -231,7 +231,8 @@ def channelselect(m):
     elif m.text==b['mainmenu'][2]:
       g=bots.find_one({})
       g=g['bots']
-      showbots(m.from_user.id,g)
+      user=users.find_one({'id':m.from_user.id})
+      showbots(user,g)
       
     elif m.text==b['mainmenu'][3]:
       stats(m.from_user.id)
