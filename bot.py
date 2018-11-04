@@ -125,22 +125,22 @@ def showcategory(category,userid,chatid,x):
         b=codebuttons.find_one({})
         if category==b['channels'][0]:
             print(x)
-            y=x[0]
+            y=x['channels'][0]
             i=0
         if category==b['channels'][1]:
-            y=x[1]
+            y=x['channels'][1]
             i=1
         if category==b['channels'][2]:
-            y=x[2]
+            y=x['channels'][2]
             i=2
         if category==b['channels'][3]:
-            y=x[3]
+            y=x['channels'][3]
             i=3
         if category==b['channels'][4]:
-            y=x[4]
+            y=x['channels'][4]
             i=4
         if category==b['channels'][5]:
-            y=x[5]
+            y=x['channels'][5]
             i=5
         channel=0
         text=''
