@@ -113,6 +113,7 @@ def dellchannel(m):
 
 def sendmenu(chatid,userid):
     b=codebuttons.find_one({})
+    print(b)
     users.update_one({'id':userid},{'$set':{'currentindex':0}})
     kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add(types.KeyboardButton(b['mainmenu'][0]))
