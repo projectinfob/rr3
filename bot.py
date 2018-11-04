@@ -29,14 +29,10 @@ def setbutton(m):
       txt=''
       while i<len(x)-1:
          txt+=x[i]+' '
+         if i+1!=len(x)-1:
+            txt+=' '
          i+=1
-      if x[1].lower()=='каналы':
-         i=4
-         tt=''
-         while i<len(x-1):
-            txt+=x[i]+' '
-            i+=1
-      if x[1].lower()=='главное_меню':
+      if x[1].lower()=='меню':
          codebuttons.update_one({},{'$set':{'mainmenu.'+x[2]:txt}})
          bot.send_message(m.chat.id, 'Кнопка успешно обновлена!')
       if x[1].lower()=='каналы':
