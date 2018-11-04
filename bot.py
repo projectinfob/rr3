@@ -10,7 +10,7 @@ import threading
 
 client1=os.environ['database']
 client=MongoClient(client1)
-db=client.channelsbase
+db=client.channelsbase2
 users=db.users
 channels=db.channels
 buttons=db.buttons
