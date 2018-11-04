@@ -28,7 +28,7 @@ def setbutton(m):
          i=4
       txt=''
       while i<len(x):
-         txt+=x[i]+' '
+         txt+=x[i]
          if i+1!=len(x):
             txt+=' '
          i+=1
