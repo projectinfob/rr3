@@ -58,7 +58,12 @@ def binfo(m):
       i+=1
    bot.send_message(m.chat.id, text)
    
-      
+def stats(id):
+   x=users.find({})
+   i=0
+   for ids in x:
+      i+=1
+   bot.send_message(id, 'Количество пользователей бота: '+str(i))
       
 @bot.message_handler(commands=['start'])
 def start(m):
