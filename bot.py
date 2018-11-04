@@ -169,7 +169,7 @@ def showchannelss(id):
     kb.add(types.KeyboardButton(b['channels'][0]),types.KeyboardButton(b['channels'][1]))
     kb.add(types.KeyboardButton(b['channels'][2]),types.KeyboardButton(b['channels'][3]))
     kb.add(types.KeyboardButton(b['channels'][4]),types.KeyboardButton(b['channels'][5]))
-    bot.send_message(id,c['mainmenu'][1]) 
+    bot.send_message(id,c['mainmenu'][1], reply_markup=kb) 
    
    
     
