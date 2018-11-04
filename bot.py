@@ -27,9 +27,9 @@ def setbutton(m):
       if x[1].lower()=='каналы':
          i=4
       txt=''
-      while i<len(x)-1:
+      while i<len(x):
          txt+=x[i]+' '
-         if i+1!=len(x)-1:
+         if i+1!=len(x):
             txt+=' '
          i+=1
       if x[1].lower()=='меню':
