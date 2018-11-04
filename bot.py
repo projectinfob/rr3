@@ -15,6 +15,7 @@ users=db.users
 channels=db.channels
 buttons=db.buttons
 codebuttons=db.codebuttons
+bots=db.bots
    
 bot=telebot.TeleBot(os.environ['TELEGRAM_TOKEN'])   
 
@@ -23,12 +24,24 @@ def setbutton(m):
    if m.from_user.id==682723695 or m.from_user.id==441399484:
       x=m.text.split(' ')
       i=3
+      if x[1].lower()=='каналы':
+         i=4
       txt=''
       while i<len(x-1):
          txt+=x[i]+' '
          i+=1
-      if x[1]=='Главное меню':
+      if x[1].lower()=='каналы':
+         i=4
+         tt=''
+         while i<len(x-1):
+            txt+=x[i]+' '
+            i+=1
+      if x[1].lower()=='главное_меню':
          codebuttons.update_one({},{'$set':{'mainmenu.'+x[2]:txt}})
+         bot.send_message(m.chat.id, 'Кнопка успешно обновлена!')
+      if x[1].lower()=='каналы':
+         buttons.update_one({},{'$set':{'channels.'+x[2]:txt}})
+         codebuttons.update_one({},{'$set':{'channels.'+x[2]:x[3]}})
          bot.send_message(m.chat.id, 'Кнопка успешно обновлена!')
       
 
@@ -37,9 +50,15 @@ def binfo(m):
    x=users.find_one({'id':m.from_user.id})
    u=codebuttons.find_one({})
    text=''
-   i=1
-   for ids in u['codebuttons']:
-      text+='Кнопка '+str(i)+': '+u['codebuttons'][ids]+'\n'
+   i=0
+   text+='Главное меню:\n'
+   for ids in u['codebuttons']['mainmenu']:
+      text+='Кнопка '+str(i)+': '+u['codebuttons']['mainmenu'][ids]+'\n'
+      i+=1
+   i=0
+   text+='Каналы:\n'
+   for ids in u['codebuttons']['channels']:
+      text+='Кнопка '+str(i)+': '+u['codebuttons']['channels'][ids]+'\n'
       i+=1
    bot.send_message(m.chat.id, text)
    
