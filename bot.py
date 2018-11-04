@@ -232,7 +232,7 @@ def channelselect(m):
       g=bots.find_one({})
       g=g['bots']
       user=users.find_one({'id':m.from_user.id})
-      showbots(user,g)
+      bot.send_message(m.chat.id, showbots(user,g))
       
     elif m.text==b['mainmenu'][3]:
       stats(m.from_user.id)
