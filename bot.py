@@ -157,8 +157,6 @@ def showcategory(category,userid,chatid,x):
    
 
 def sellchannel(id):
-    x=get_full_channel('@cookiewarsupdates')
-    print(x)
     kb=types.ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add(types.KeyboardButton('❌Отмена'))
     bot.send_message(id,'Укажите юзернейм вашего канала следующим сообщением.',reply_markup=kb)
@@ -218,7 +216,7 @@ def channelselect(m):
         
         
     elif m.text==b['mainmenu'][0]:
-      sellchannel()
+      sellchannel(m.from_user.id)
         
     elif m.text==b['mainmenu'][1]:
         showchannelss()
