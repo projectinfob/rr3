@@ -124,6 +124,7 @@ def sendmenu(chatid,userid):
 def showcategory(category,userid,chatid,x):
         b=codebuttons.find_one({})
         if category==b['channels'][0]:
+            print(x)
             y=x[0]
             i=0
         if category==b['channels'][1]:
