@@ -219,16 +219,16 @@ def channelselect(m):
       sellchannel(m.from_user.id)
         
     elif m.text==b['mainmenu'][1]:
-        showchannelss()
+        showchannelss(m.from_user.id)
             
     elif m.text==b['mainmenu'][2]:
-      showbots()
+      showbots(m.from_user.id)
       
     elif m.text==b['mainmenu'][3]:
-      stats()
+      stats(m.from_user.id)
       
     elif m.text==b['mainmenu'][4]:
-      ballance()
+      ballance(m.from_user.id)
       
       
     elif m.text==c['channels'][0]:
