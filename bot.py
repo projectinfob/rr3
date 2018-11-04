@@ -421,6 +421,8 @@ def showbots(user, y):
       except:
             pass
       channel+=1
+    if text=='':
+      text='Здесь пока что нет ни одного бота!'
     return text
     
    
