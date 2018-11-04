@@ -221,19 +221,19 @@ def channelselect(m):
         bot.send_message(m.chat.id, text, reply_markup=kb)
         
         
-    elif m.text==b['mainmenu']['0']:
+    elif m.text==b['mainmenu'][0]:
       sellchannel()
         
-    elif m.text==b['mainmenu']['1']:
+    elif m.text==b['mainmenu'][1]:
         showchannelss()
             
-    elif m.text==b['mainmenu']['2']:
+    elif m.text==b['mainmenu'][2]:
       showbots()
       
-    elif m.text==b['mainmenu']['3']:
+    elif m.text==b['mainmenu'][3]:
       stats()
       
-    elif m.text==b['mainmenu']['4']:
+    elif m.text==b['mainmenu'][4]:
       ballance()
       
       
