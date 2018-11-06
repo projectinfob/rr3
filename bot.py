@@ -269,6 +269,7 @@ def channelselect(m):
         
     elif m.text=='📮Продать рекламу':
         bot.send_message(m.chat.id,'Для добавления бота в каталог напишите [администратору](tg://user?id='+str(682723695)+').',parse_mode='markdown')                   
+          
             
     user=users.find_one({'id':m.from_user.id})
     if 'addingchannel' in user['actions']:
@@ -319,6 +320,10 @@ def channelselect(m):
       except:
            bot.send_message(m.chat.id, 'Неправильно введены аргументы для добавления канала!')
             
+    elif 'sc' in user['actions'] and 'sc_name' in user['actions']:
+        
+    
+    
     elif 'removingchannel' in user['actions']: 
         chn=None
         ii=None
@@ -474,6 +479,14 @@ def createuser(id,name,username):
           #'addingadmin':0,
           #'removingadmin':0,
           #'setcode':0,
+          'channelinfo':{
+              'username':None,
+              'price':None,
+              'discount':None,
+              'finalprice':None,
+              'theme':None
+              
+          },
           'codenumber':None,
           'actions':[]
          }
